@@ -8,7 +8,8 @@
 class Enemy
 {
 private:
-	COORD position; //darle posición x,y
+	COORD spawn; //darle posición x,y
+	COORD position;
 	COORD direction;
 	char character = 'A';
 	ConsoleUtils::CONSOLE_COLOR foreground = ConsoleUtils::CONSOLE_COLOR::DARK_RED; //color del char
@@ -16,9 +17,10 @@ private:
 	void RandomDirection();
 
 public:
+	enum ENEMY_STATE { ENEMY_NONE, ENEMY_KILLED, ENEMY_DEAD };
 	Enemy();
 	Enemy(COORD _spawn);
 	void Draw();
-	void Update(Map* _map);
+	ENEMY_STATE Update(Map* _map, COORD _player);
 };
 

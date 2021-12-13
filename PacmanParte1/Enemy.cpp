@@ -23,13 +23,15 @@ void Enemy::RandomDirection()
 
 Enemy::Enemy()
 {
-	position = { 10,5 };
+	spawn = { 0,0 };
+	position = spawn;
 	direction = { 0,0 };
 
 }
 
 Enemy::Enemy(COORD _spawn)
 {
+	spawn = _spawn;
 	position = _spawn;
 	direction = { 0,0 };
 }
@@ -41,7 +43,7 @@ void Enemy::Draw()
 	std::cout << character;
 }
 
-void Enemy::Update(Map* _map)
+Enemy::ENEMY_STATE Enemy::Update(Map* _map, COORD _player)
 {
 	RandomDirection();
 	COORD newPosition = position;
@@ -70,6 +72,14 @@ void Enemy::Update(Map* _map)
 	}
 	position = newPosition;
 
+	ENEMY_STATE state = ENEMY_STATE::ENEMY_NONE;
+	if (position.X == _player.X  && position.Y == _player.Y) 
+	{
+		position = spawn;
+		state = ENEMY_STATE::ENEMY_KILLED;
+	}
+	return state;
+
 	/*switch (_map->GetTile(position.X + direction.X, position.Y + direction.Y))
 	{
 	case Map::MAP_TILES::MAP_EMPTY:
@@ -78,5 +88,7 @@ void Enemy::Update(Map* _map)
 		position.Y += direction.Y;
 		break;
 	}*/
+
+
 }
 
